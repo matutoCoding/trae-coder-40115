@@ -105,3 +105,22 @@
   color: $color-primary-light;
   font-weight: $font-weight-medium;
 }
+
+.diffSection {
+  margin-top: $spacing-sm;
+  padding-top: $spacing-sm;
+  border-top: 1rpx dashed $color-divider;
+}
+
+.diffText {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+}
+
+.diffPlus {
+  color: #2E7D32;
+}
+
+.diffMinus {
+  color: #C62828;
+}

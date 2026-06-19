@@ -8,10 +8,12 @@ import { getDaysDiff, today } from '@/utils/date';
 
 interface LiquorCardProps {
   liquor: Liquor;
+  lastCheckDiff?: number;
+  lastCheckDate?: string;
   onClick?: () => void;
 }
 
-const LiquorCard: React.FC<LiquorCardProps> = ({ liquor, onClick }) => {
+const LiquorCard: React.FC<LiquorCardProps> = ({ liquor, lastCheckDiff, lastCheckDate, onClick }) => {
   const handleClick = () => {
     if (onClick) {
       onClick();
@@ -21,6 +23,8 @@ const LiquorCard: React.FC<LiquorCardProps> = ({ liquor, onClick }) => {
       });
     }
   };
+
+  const diffClass = lastCheckDiff && lastCheckDiff > 0 ? styles.diffPlus : lastCheckDiff && lastCheckDiff < 0 ? styles.diffMinus : '';
 
   return (
     <View className={styles.card} onClick={handleClick}>
@@ -44,6 +48,14 @@ const LiquorCard: React.FC<LiquorCardProps> = ({ liquor, onClick }) => {
           <View className={styles.infoValue}>{liquor.batches.length} 批</View>
         </View>
       </View>
+
+      {lastCheckDiff !== undefined && lastCheckDiff !== 0 && (
+        <View className={styles.diffSection}>
+          <Text className={`${styles.diffText} ${diffClass}`}>
+            📊 最近盘点 {lastCheckDate}: {lastCheckDiff > 0 ? '盘盈' : '盘亏'} {Math.abs(lastCheckDiff)} {liquor.unit}
+          </Text>
+        </View>
+      )}
 
       <View className={styles.footer}>
         {liquor.warningCount > 0 ? (

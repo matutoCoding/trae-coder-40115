@@ -29,6 +29,21 @@ const InventoryPage: React.FC = () => {
     return state.batches.filter(b => b.status !== 'normal' && b.quantity > 0);
   }, [state.batches]);
 
+  const lastCheckMap = useMemo(() => {
+    const map: Record<string, { diff: number; date: string }> = {};
+    for (const record of state.stockCheckRecords) {
+      for (const item of record.items) {
+        if (item.diffQty !== 0 && !map[item.liquorId]) {
+          map[item.liquorId] = {
+            diff: item.diffQty,
+            date: record.checkDate
+          };
+        }
+      }
+    }
+    return map;
+  }, [state.stockCheckRecords]);
+
   const filteredLiquors = useMemo(() => {
     let result = state.liquors;
     if (activeFilter !== 'all') {
@@ -141,7 +156,12 @@ const InventoryPage: React.FC = () => {
         </View>
       ) : (
         filteredLiquors.map(liquor => (
-          <LiquorCard key={liquor.id} liquor={liquor} />
+          <LiquorCard
+            key={liquor.id}
+            liquor={liquor}
+            lastCheckDiff={lastCheckMap[liquor.id]?.diff}
+            lastCheckDate={lastCheckMap[liquor.id]?.date}
+          />
         ))
       )}
 

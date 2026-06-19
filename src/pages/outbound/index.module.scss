@@ -176,6 +176,25 @@
   color: $color-primary-light;
 }
 
+.courseInfo {
+  background: rgba(139, 69, 19, 0.08);
+  border-radius: $radius-sm;
+  padding: $spacing-sm $spacing-md;
+  width: 100%;
+}
+
+.courseName {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: 4rpx;
+}
+
+.courseMeta {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
 .recordFooter {
   display: flex;
   justify-content: space-between;

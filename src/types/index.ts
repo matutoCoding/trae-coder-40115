@@ -101,6 +101,9 @@ export interface OutboundRecord {
   outboundDate: string;
   purpose: string;
   courseId?: string;
+  courseName?: string;
+  courseDate?: string;
+  stationName?: string;
   isFifo: boolean;
 }
 

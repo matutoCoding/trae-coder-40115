@@ -186,6 +186,9 @@ const CourseDetailPage: React.FC = () => {
             type: 'COMPLETE_COURSE',
             payload: {
               courseId: course.id,
+              courseName: course.title,
+              courseDate: course.date,
+              stationName: course.stationName,
               materials: actualMaterials
             }
           });

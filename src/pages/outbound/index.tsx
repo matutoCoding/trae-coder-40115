@@ -248,10 +248,24 @@ const OutboundPage: React.FC = () => {
                     <View className={styles.infoLabel}>出库数量</View>
                     <View className={styles.quantity}>-{record.quantity} {record.unit}</View>
                   </View>
-                  <View className={styles.infoItem}>
-                    <View className={styles.infoLabel}>用途</View>
-                    <View className={styles.infoValue}>{record.purpose}</View>
-                  </View>
+                  {record.courseName ? (
+                    <>
+                      <View className={styles.infoItem} style={{ gridColumn: '1 / -1' }}>
+                        <View className={styles.infoLabel}>关联课程</View>
+                        <View className={styles.courseInfo}>
+                          <View className={styles.courseName}>📚 {record.courseName}</View>
+                          <View className={styles.courseMeta}>
+                            📅 {record.courseDate} · 📍 {record.stationName}
+                          </View>
+                        </View>
+                      </View>
+                    </>
+                  ) : (
+                    <View className={styles.infoItem}>
+                      <View className={styles.infoLabel}>用途</View>
+                      <View className={styles.infoValue}>{record.purpose}</View>
+                    </View>
+                  )}
                   <View className={styles.infoItem}>
                     <View className={styles.infoLabel}>操作人</View>
                     <View className={styles.infoValue}>{record.operator}</View>

@@ -23,7 +23,7 @@ type ActionType =
   | { type: 'DELETE_COURSE'; payload: string }
   | { type: 'BATCH_ADD_COURSES'; payload: Course[] }
   | { type: 'SIGNIN_STUDENT'; payload: { courseId: string; studentName: string; isPresent: boolean } }
-  | { type: 'COMPLETE_COURSE'; payload: { courseId: string; materials: CourseMaterial[] } }
+  | { type: 'COMPLETE_COURSE'; payload: { courseId: string; courseName: string; courseDate: string; stationName: string; materials: CourseMaterial[] } }
   | { type: 'ADD_RULE'; payload: CycleRule }
   | { type: 'UPDATE_RULE'; payload: CycleRule }
   | { type: 'DELETE_RULE'; payload: string }
@@ -75,7 +75,8 @@ const fifoDeduct = (
   outboundRecords: OutboundRecord[],
   operator: string,
   purpose: string,
-  courseId?: string
+  courseId?: string,
+  courseInfo?: { courseName: string; courseDate: string; stationName: string }
 ): { newBatches: Batch[]; newRecords: OutboundRecord[]; insufficient: boolean } => {
   let remaining = qty;
   let newBatches = [...batches];
@@ -114,6 +115,9 @@ const fifoDeduct = (
       outboundDate: today(),
       purpose,
       courseId,
+      courseName: courseInfo?.courseName,
+      courseDate: courseInfo?.courseDate,
+      stationName: courseInfo?.stationName,
       isFifo: true
     });
     remaining -= deductQty;
@@ -174,22 +178,55 @@ function reducer(state: AppState, action: ActionType): AppState {
     }
 
     case 'COMPLETE_COURSE': {
-      const { courseId, materials } = action.payload;
-      let workingBatches = state.batches;
-      let workingRecords = state.outboundRecords;
+      const { courseId, courseName, courseDate, stationName, materials } = action.payload;
       const operator = '当前管理员';
+      const courseInfo = { courseName, courseDate, stationName };
+
+      const validatedMaterials: { liquorId: string; actualQty: number }[] = [];
+      let allSufficient = true;
+      const insufficientList: string[] = [];
 
       for (const m of materials) {
         const actualQty = (m.actualQty ?? m.estimatedQty);
         if (actualQty <= 0) continue;
+        validatedMaterials.push({ liquorId: m.liquorId, actualQty });
+
+        const availableBatches = state.batches.filter(b =>
+          b.liquorId === m.liquorId
+          && (b.status === 'normal' || b.status === 'expiring')
+          && b.quantity > 0
+        );
+        const totalAvailable = availableBatches.reduce((sum, b) => sum + b.quantity, 0);
+        if (totalAvailable < actualQty) {
+          allSufficient = false;
+          insufficientList.push(`${m.liquorName}(需${actualQty}${m.unit}，库存仅${totalAvailable}${m.unit})`);
+        }
+      }
+
+      if (!allSufficient) {
+        Taro.showModal({
+          title: '库存不足，课程未完成',
+          content: `以下酒品可用库存不足：\n\n${insufficientList.join('\n')}\n\n请先补充库存或调整实际用量。`,
+          showCancel: false,
+          confirmColor: '#F44336'
+        });
+        newState = state;
+        break;
+      }
+
+      let workingBatches = state.batches;
+      let workingRecords = state.outboundRecords;
+
+      for (const vm of validatedMaterials) {
         const res = fifoDeduct(
-          m.liquorId,
-          actualQty,
+          vm.liquorId,
+          vm.actualQty,
           workingBatches,
           workingRecords,
           operator,
-          `课程消耗:${m.liquorName}`,
-          courseId
+          `课程消耗`,
+          courseId,
+          courseInfo
         );
         if (!res.insufficient) {
           workingBatches = res.newBatches;
