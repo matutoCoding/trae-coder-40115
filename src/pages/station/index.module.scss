@@ -1,0 +1,257 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding: $spacing-md $page-padding $spacing-xl;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.title {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.subtitle {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+}
+
+.addBtn {
+  @include button-reset;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  padding: 0 $spacing-lg;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.statCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  text-align: center;
+  border: 1rpx solid $color-border;
+}
+
+.statValue {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-primary-light;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+}
+
+.stationCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  border: 1rpx solid $color-border;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.3);
+  transition: all $transition-base;
+  position: relative;
+  overflow: hidden;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
+  &.maintenance {
+    border-color: rgba(255, 152, 0, 0.3);
+  }
+
+  &.inactive {
+    opacity: 0.6;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-md;
+}
+
+.stationInfo {
+  flex: 1;
+  margin-right: $spacing-sm;
+}
+
+.stationName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.stationCode {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+  font-family: monospace;
+}
+
+.tag {
+  padding: 4rpx 16rpx;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+}
+
+.tagActive {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4CAF50;
+}
+
+.tagMaintenance {
+  background: rgba(255, 152, 0, 0.15);
+  color: #FF9800;
+}
+
+.tagInactive {
+  background: rgba(117, 117, 117, 0.2);
+  color: #9E9E9E;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.infoLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.infoValue {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.toolsSection {
+  background: $color-bg-hover;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.toolsTitle {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-sm;
+}
+
+.toolsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+}
+
+.toolChip {
+  padding: 4rpx 16rpx;
+  background: rgba(139, 69, 19, 0.2);
+  color: $color-primary-light;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.createDate {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.actionBtn {
+  @include button-reset;
+  padding: 0 $spacing-md;
+  height: $button-height-sm;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  background: $color-bg-hover;
+  color: $color-primary-light;
+  border: 1rpx solid $color-primary;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin: $spacing-md 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.countBadge {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  font-weight: $font-weight-normal;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl * 2;
+  color: $color-text-tertiary;
+}
+
+.emptyIcon {
+  font-size: 100rpx;
+  margin-bottom: $spacing-md;
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}

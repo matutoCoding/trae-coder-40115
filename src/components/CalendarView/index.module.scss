@@ -1,0 +1,131 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+  border: 1rpx solid $color-border;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.monthText {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.navBtn {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-round;
+  background: $color-bg-hover;
+  color: $color-text-secondary;
+  font-size: $font-size-lg;
+
+  &:active {
+    background: $color-primary;
+    color: $color-text-white;
+  }
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: $spacing-sm;
+}
+
+.weekdayText {
+  text-align: center;
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  padding: $spacing-xs 0;
+  font-weight: $font-weight-medium;
+}
+
+.weekend {
+  color: $color-primary-light;
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: $spacing-xs;
+}
+
+.dayCell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-sm;
+  position: relative;
+  transition: all $transition-fast;
+
+  &:active {
+    background: $color-bg-hover;
+  }
+}
+
+.dayText {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.otherMonth {
+  .dayText {
+    color: $color-text-disabled;
+  }
+}
+
+.today {
+  .dayText {
+    color: $color-primary-light;
+    font-weight: $font-weight-bold;
+  }
+}
+
+.selected {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+
+  .dayText {
+    color: $color-text-white;
+  }
+}
+
+.weekendCell {
+  .dayText {
+    color: $color-primary-light;
+  }
+
+  &.selected .dayText {
+    color: $color-text-white;
+  }
+}
+
+.hasCourse {
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 8rpx;
+    width: 8rpx;
+    height: 8rpx;
+    border-radius: 50%;
+    background: $color-primary-light;
+  }
+
+  &.selected::after {
+    background: $color-text-white;
+  }
+}

@@ -1,0 +1,162 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding: $spacing-md $page-padding $spacing-xl;
+}
+
+.headerCard {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-xl $spacing-lg;
+  margin-bottom: $spacing-md;
+  color: $color-text-white;
+}
+
+.courseTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-sm;
+}
+
+.tagRow {
+  display: flex;
+  gap: $spacing-xs;
+  flex-wrap: wrap;
+}
+
+.tag {
+  padding: 4rpx 16rpx;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  background: rgba(255, 255, 255, 0.2);
+  color: $color-text-white;
+}
+
+.infoCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  border: 1rpx solid $color-border;
+}
+
+.cardTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+  display: flex;
+  align-items: center;
+}
+
+.cardIcon {
+  margin-right: $spacing-sm;
+  font-size: $font-size-lg;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+}
+
+.infoLabel {
+  width: 160rpx;
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+  flex-shrink: 0;
+}
+
+.infoValue {
+  flex: 1;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.studentList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.studentChip {
+  display: flex;
+  align-items: center;
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-hover;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.studentAvatar {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  margin-right: $spacing-xs;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-xs;
+  color: $color-text-white;
+}
+
+.actionRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+  position: sticky;
+  bottom: 0;
+  padding-top: $spacing-md;
+}
+
+.btnPrimary {
+  @include button-reset;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.btnSecondary {
+  @include button-reset;
+  background: $color-bg-card;
+  color: $color-primary-light;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  border: 2rpx solid $color-primary;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.generatedBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  background: rgba(33, 150, 243, 0.15);
+  color: $color-info;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  margin-left: $spacing-sm;
+}

@@ -1,0 +1,90 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.3);
+  border: 1rpx solid $color-border;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-md;
+}
+
+.titleSection {
+  flex: 1;
+  margin-right: $spacing-sm;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.tagRow {
+  display: flex;
+  gap: $spacing-xs;
+  margin-top: $spacing-xs;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-xs;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.infoIcon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: $spacing-xs;
+  color: $color-text-tertiary;
+}
+
+.infoText {
+  @include text-ellipsis;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.students {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.action {
+  font-size: $font-size-sm;
+  color: $color-primary-light;
+  font-weight: $font-weight-medium;
+}

@@ -1,0 +1,174 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.3);
+  border: 1rpx solid $color-border;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.cardTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.cardSubtitle {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+}
+
+.cardBody {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  white-space: nowrap;
+}
+
+.tagBasic {
+  background: rgba(76, 175, 80, 0.15);
+  color: $color-success;
+}
+
+.tagIntermediate {
+  background: rgba(33, 150, 243, 0.15);
+  color: $color-info;
+}
+
+.tagAdvanced {
+  background: rgba(139, 69, 19, 0.25);
+  color: $color-primary-light;
+}
+
+.tagExam {
+  background: rgba(255, 152, 0, 0.15);
+  color: $color-warning;
+}
+
+.tagNormal {
+  background: rgba(76, 175, 80, 0.15);
+  color: $color-success;
+}
+
+.tagExpiring {
+  background: rgba(255, 152, 0, 0.15);
+  color: $color-warning;
+}
+
+.tagExpired {
+  background: rgba(244, 67, 54, 0.15);
+  color: $color-error;
+}
+
+.tagLocked {
+  background: rgba(117, 117, 117, 0.2);
+  color: $color-locked;
+}
+
+.tagBase {
+  background: rgba(139, 69, 19, 0.2);
+  color: $color-primary-light;
+}
+
+.tagSyrup {
+  background: rgba(255, 183, 77, 0.2);
+  color: $color-expiring;
+}
+
+.tagLiqueur {
+  background: rgba(156, 39, 176, 0.15);
+  color: #CE93D8;
+}
+
+.tagJuice {
+  background: rgba(76, 175, 80, 0.15);
+  color: $color-success;
+}
+
+.tagOther {
+  background: rgba(129, 129, 129, 0.2);
+  color: $color-text-tertiary;
+}
+
+.tagScheduled {
+  background: rgba(33, 150, 243, 0.15);
+  color: $color-info;
+}
+
+.tagOngoing {
+  background: rgba(76, 175, 80, 0.15);
+  color: $color-success;
+}
+
+.tagCompleted {
+  background: rgba(129, 129, 129, 0.2);
+  color: $color-text-tertiary;
+}
+
+.tagCancelled {
+  background: rgba(244, 67, 54, 0.15);
+  color: $color-error;
+}
+
+.tagActive {
+  background: rgba(76, 175, 80, 0.15);
+  color: $color-success;
+}
+
+.tagInactive {
+  background: rgba(129, 129, 129, 0.2);
+  color: $color-text-tertiary;
+}
+
+.tagMaintenance {
+  background: rgba(255, 152, 0, 0.15);
+  color: $color-warning;
+}
+
+.tagPending {
+  background: rgba(129, 129, 129, 0.2);
+  color: $color-text-tertiary;
+}
+
+.tagReviewing {
+  background: rgba(33, 150, 243, 0.15);
+  color: $color-info;
+}
+
+.tagPassed {
+  background: rgba(76, 175, 80, 0.15);
+  color: $color-success;
+}
+
+.tagFailed {
+  background: rgba(244, 67, 54, 0.15);
+  color: $color-error;
+}

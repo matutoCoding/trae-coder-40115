@@ -1,0 +1,107 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.3);
+  border: 1rpx solid $color-border;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-md;
+}
+
+.titleSection {
+  flex: 1;
+  margin-right: $spacing-sm;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.brand {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+}
+
+.tagRow {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.infoSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.infoLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.infoValue {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.dangerValue {
+  color: $color-error;
+}
+
+.warningValue {
+  color: $color-warning;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.batchCount {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.warningBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  background: rgba(255, 152, 0, 0.15);
+  color: $color-warning;
+}
+
+.action {
+  font-size: $font-size-sm;
+  color: $color-primary-light;
+  font-weight: $font-weight-medium;
+}

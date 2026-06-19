@@ -1,0 +1,221 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding: $spacing-md $page-padding $spacing-xl;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.title {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.subtitle {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+}
+
+.addBtn {
+  @include button-reset;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  padding: 0 $spacing-lg;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  border: 1rpx solid $color-border;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.3);
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-md;
+}
+
+.titleSection {
+  flex: 1;
+  margin-right: $spacing-sm;
+}
+
+.ruleTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.courseTitle {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-top: $spacing-xs;
+}
+
+.tagRow {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.infoLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.infoValue {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis;
+}
+
+.weekdayRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-sm;
+}
+
+.weekdayChip {
+  padding: 6rpx 16rpx;
+  border-radius: $radius-sm;
+  background: rgba(139, 69, 19, 0.2);
+  color: $color-primary-light;
+  font-size: $font-size-xs;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.generatedCount {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.actionBtn {
+  font-size: $font-size-sm;
+  color: $color-primary-light;
+  font-weight: $font-weight-medium;
+}
+
+.generateBtn {
+  @include button-reset;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  padding: 0 $spacing-lg;
+  height: $button-height-sm;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+
+  &.disabled {
+    background: $color-bg-hover;
+    color: $color-text-disabled;
+  }
+}
+
+.statsBanner {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  color: $color-text-white;
+}
+
+.statsTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  margin-bottom: $spacing-md;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-md;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statNum {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  opacity: 0.8;
+  margin-top: $spacing-xs;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl * 2;
+  color: $color-text-tertiary;
+}
+
+.emptyIcon {
+  font-size: 100rpx;
+  margin-bottom: $spacing-md;
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}

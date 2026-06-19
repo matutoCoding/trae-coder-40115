@@ -1,0 +1,296 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding: $spacing-md $page-padding $spacing-xl;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.title {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.subtitle {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+}
+
+.outboundBtn {
+  @include button-reset;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  padding: 0 $spacing-lg;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+  background: $color-bg-card;
+  padding: $spacing-xs;
+  border-radius: $radius-lg;
+  border: 1rpx solid $color-border;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: $spacing-sm 0;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+  transition: all $transition-fast;
+
+  &.active {
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+    color: $color-text-white;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.statCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  text-align: center;
+  border: 1rpx solid $color-border;
+}
+
+.statValue {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-primary-light;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+}
+
+.fifoTip {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.05) 100%);
+  border: 1rpx solid rgba(76, 175, 80, 0.3);
+  border-radius: $radius-lg;
+  padding: $spacing-md $spacing-lg;
+  margin-bottom: $spacing-md;
+  display: flex;
+  align-items: center;
+}
+
+.tipIcon {
+  font-size: $font-size-lg;
+  margin-right: $spacing-sm;
+}
+
+.tipText {
+  font-size: $font-size-sm;
+  color: $color-success;
+  flex: 1;
+}
+
+.recordCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  border: 1rpx solid $color-border;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.3);
+}
+
+.recordHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.recordTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.fifoBadge {
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-xs;
+  background: rgba(76, 175, 80, 0.15);
+  color: $color-success;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.infoLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.infoValue {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis;
+}
+
+.quantity {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-primary-light;
+}
+
+.recordFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.dateText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.operator {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.pendingCard {
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.2) 0%, rgba(139, 69, 19, 0.1) 100%);
+  border: 1rpx solid $color-border;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+}
+
+.pendingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.pendingTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.expiryText {
+  font-size: $font-size-xs;
+  color: $color-warning;
+}
+
+.pendingInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.pendingBatch {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.pendingQty {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-primary-light;
+}
+
+.pendingAction {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actionBtn {
+  @include button-reset;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  padding: 0 $spacing-lg;
+  height: $button-height-sm;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl * 2;
+  color: $color-text-tertiary;
+}
+
+.emptyIcon {
+  font-size: 100rpx;
+  margin-bottom: $spacing-md;
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin: $spacing-md 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.countBadge {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  font-weight: $font-weight-normal;
+}

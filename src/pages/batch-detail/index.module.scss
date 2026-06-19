@@ -1,0 +1,310 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding: $spacing-md $page-padding $spacing-xl;
+}
+
+.liquorHeader {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-xl $spacing-lg;
+  margin-bottom: $spacing-md;
+  color: $color-text-white;
+}
+
+.liquorName {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-xs;
+}
+
+.liquorBrand {
+  font-size: $font-size-sm;
+  opacity: 0.8;
+  margin-bottom: $spacing-md;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-md;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statValue {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  opacity: 0.8;
+  margin-top: $spacing-xs;
+}
+
+.tabs {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+  background: $color-bg-card;
+  padding: $spacing-xs;
+  border-radius: $radius-lg;
+  border: 1rpx solid $color-border;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: $spacing-sm 0;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+  transition: all $transition-fast;
+
+  &.active {
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+    color: $color-text-white;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.batchCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  border: 1rpx solid $color-border;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.batchCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-md;
+}
+
+.batchTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.tagRow {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.tag {
+  padding: 4rpx 16rpx;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+}
+
+.tagNormal {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4CAF50;
+}
+
+.tagExpiring {
+  background: rgba(255, 152, 0, 0.15);
+  color: #FF9800;
+}
+
+.tagExpired {
+  background: rgba(244, 67, 54, 0.15);
+  color: #F44336;
+}
+
+.tagLocked {
+  background: rgba(117, 117, 117, 0.2);
+  color: #9E9E9E;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.infoLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.infoValue {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.warningValue {
+  color: $color-warning;
+}
+
+.dangerValue {
+  color: $color-error;
+}
+
+.lockedOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(117, 117, 117, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.lockedIcon {
+  font-size: 80rpx;
+  opacity: 0.3;
+}
+
+.batchFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-sm;
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.actionBtn {
+  @include button-reset;
+  padding: 0 $spacing-md;
+  height: $button-height-sm;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.btnOutbound {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+}
+
+.btnUnlock {
+  background: $color-bg-hover;
+  color: $color-primary-light;
+  border: 1rpx solid $color-primary;
+}
+
+.btnLock {
+  background: rgba(244, 67, 54, 0.15);
+  color: $color-error;
+  border: 1rpx solid $color-error;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin: $spacing-md 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.countBadge {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  font-weight: $font-weight-normal;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl * 2;
+  color: $color-text-tertiary;
+}
+
+.emptyIcon {
+  font-size: 100rpx;
+  margin-bottom: $spacing-md;
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}
+
+.floatingBtn {
+  position: fixed;
+  right: $page-padding;
+  bottom: 120rpx;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text-white;
+  font-size: 56rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.recordItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.recordInfo {
+  flex: 1;
+}
+
+.recordTitle {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.recordDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+}
+
+.recordQty {
+  font-size: $font-size-md;
+  color: $color-primary-light;
+  font-weight: $font-weight-semibold;
+}
