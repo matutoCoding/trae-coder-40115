@@ -88,3 +88,126 @@
   color: $color-primary-light;
   font-weight: $font-weight-medium;
 }
+
+.statusScheduled {
+  border-left: 8rpx solid #4CAF50;
+}
+
+.statusOngoing {
+  border-left: 8rpx solid #FF9800;
+  animation: pulse 2s infinite;
+}
+
+.statusCompleted {
+  border-left: 8rpx solid #9E9E9E;
+  opacity: 0.8;
+}
+
+.statusCancelled {
+  border-left: 8rpx solid #F44336;
+  opacity: 0.6;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.3); }
+  50% { box-shadow: 0 4rpx 24rpx rgba(255, 152, 0, 0.4); }
+}
+
+.signinRow {
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.signinInfo {
+  display: flex;
+  align-items: baseline;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+}
+
+.signinLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.signinValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.absentBadge {
+  color: #F44336;
+  font-size: $font-size-sm;
+  margin-left: $spacing-sm;
+}
+
+.progressBar {
+  height: 12rpx;
+  background: $color-bg-input;
+  border-radius: 6rpx;
+  overflow: hidden;
+  margin-bottom: $spacing-xs;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  border-radius: 6rpx;
+  transition: width $transition-base;
+}
+
+.materialHint {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-top: $spacing-sm;
+}
+
+.actionRow {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.btnEdit {
+  @include button-reset;
+  background: $color-bg-page;
+  color: $color-primary;
+  border: 2rpx solid $color-primary;
+  padding: 0 $spacing-md;
+  height: $button-height-sm;
+  line-height: $button-height-sm;
+  border-radius: $radius-sm;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  flex-shrink: 0;
+}
+
+.btnDetail {
+  @include button-reset;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  padding: 0 $spacing-md;
+  height: $button-height-sm;
+  line-height: $button-height-sm;
+  border-radius: $radius-sm;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  flex-shrink: 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+  gap: $spacing-sm;
+}
+
+.students {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  flex: 1;
+}

@@ -13,6 +13,11 @@
   margin-bottom: $spacing-md;
 }
 
+.headerActions {
+  display: flex;
+  gap: $spacing-sm;
+}
+
 .title {
   font-size: $font-size-xxl;
   font-weight: $font-weight-bold;
@@ -23,6 +28,18 @@
   font-size: $font-size-sm;
   color: $color-text-tertiary;
   margin-top: $spacing-xs;
+}
+
+.checkBtn {
+  @include button-reset;
+  background: $color-bg-card;
+  color: $color-primary;
+  border: 2rpx solid $color-primary;
+  padding: 0 $spacing-md;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
 }
 
 .addBtn {

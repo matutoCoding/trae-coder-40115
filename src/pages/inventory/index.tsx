@@ -75,7 +75,10 @@ const InventoryPage: React.FC = () => {
           <View className={styles.title}>基酒库存</View>
           <View className={styles.subtitle}>批号效期管理</View>
         </View>
-        <Button className={styles.addBtn} onClick={handleAddBatch}>+ 登记入库</Button>
+        <View className={styles.headerActions}>
+          <Button className={styles.checkBtn} onClick={() => Taro.navigateTo({ url: '/pages/stock-check/index' })}>📋 盘点</Button>
+          <Button className={styles.addBtn} onClick={handleAddBatch}>+ 登记入库</Button>
+        </View>
       </View>
 
       {warningBatches.length > 0 && (

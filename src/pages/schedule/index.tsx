@@ -157,7 +157,7 @@ const SchedulePage: React.FC = () => {
         </View>
       ) : (
         filteredCourses.map(course => (
-          <CourseCard key={course.id} course={course} onClick={() => handleEditCourse(course)} />
+          <CourseCard key={course.id} course={course} onEdit={handleEditCourse} />
         ))
       )}
 

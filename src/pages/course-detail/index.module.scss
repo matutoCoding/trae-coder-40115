@@ -160,3 +160,317 @@
   font-size: $font-size-xs;
   margin-left: $spacing-sm;
 }
+
+.tip {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  background: rgba(139, 69, 19, 0.08);
+  padding: 4rpx 12rpx;
+  border-radius: $radius-sm;
+  margin-left: auto;
+}
+
+.progressSection {
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.progressLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-sm;
+}
+
+.progressBar {
+  height: 16rpx;
+  background: $color-bg-input;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  border-radius: 8rpx;
+  transition: width $transition-base;
+}
+
+.studentChip {
+  display: flex;
+  align-items: center;
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-hover;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  position: relative;
+}
+
+.student_pending {
+  background: $color-bg-hover;
+  color: $color-text-secondary;
+}
+
+.student_present {
+  background: rgba(76, 175, 80, 0.15);
+  color: #2E7D32;
+}
+
+.student_absent {
+  background: rgba(244, 67, 54, 0.1);
+  color: #C62828;
+}
+
+.avatar_pending {
+  background: linear-gradient(135deg, #9E9E9E 0%, #757575 100%);
+}
+
+.avatar_present {
+  background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+}
+
+.avatar_absent {
+  background: linear-gradient(135deg, #F44336 0%, #C62828 100%);
+}
+
+.statusIcon {
+  margin-left: 8rpx;
+  font-weight: bold;
+}
+
+.materialList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.materialItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-sm 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.materialName {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.materialQty {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.actualQty {
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+}
+
+.recordItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-sm 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.recordInfo {
+  flex: 1;
+}
+
+.recordTitle {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.recordDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.recordQty {
+  font-size: $font-size-md;
+  color: #F44336;
+  font-weight: $font-weight-semibold;
+}
+
+.btnEdit {
+  @include button-reset;
+  background: $color-bg-card;
+  color: $color-primary;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  border: 2rpx solid $color-primary;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.actionRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: $spacing-md;
+  position: sticky;
+  bottom: 0;
+  padding-top: $spacing-md;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  width: 90%;
+  max-height: 85vh;
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-lg;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.modalTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.closeBtn {
+  font-size: 48rpx;
+  color: $color-text-tertiary;
+  line-height: 1;
+  padding: 0 $spacing-xs;
+}
+
+.modalBody {
+  flex: 1;
+  padding: $spacing-lg;
+  max-height: 60vh;
+}
+
+.modalTip {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  background: rgba(139, 69, 19, 0.08);
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-sm;
+  margin-bottom: $spacing-md;
+}
+
+.materialRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.materialStock {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.stockShort {
+  color: #F44336;
+  font-weight: $font-weight-semibold;
+}
+
+.qtyControl {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.qtyBtn {
+  width: 56rpx;
+  height: 56rpx;
+  padding: 0 !important;
+  line-height: 56rpx;
+  font-size: 32rpx;
+  background: $color-bg-input;
+  color: $color-primary;
+  border-radius: 12rpx;
+}
+
+.qtyInput {
+  width: 100rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: $color-text-primary;
+  padding: 8rpx 12rpx;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: 12rpx;
+}
+
+.qtyUnit {
+  font-size: 24rpx;
+  color: $color-text-tertiary;
+  margin-left: 8rpx;
+  min-width: 40rpx;
+}
+
+.modalFooter {
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  border-top: 1rpx solid $color-divider;
+}
+
+.cancelBtn {
+  @include button-reset;
+  flex: 1;
+  background: $color-bg-page;
+  color: $color-text-secondary;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+}
+
+.confirmBtn {
+  @include button-reset;
+  flex: 2;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}

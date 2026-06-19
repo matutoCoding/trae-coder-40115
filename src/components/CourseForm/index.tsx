@@ -10,11 +10,12 @@ import { formatDate, today } from '@/utils/date';
 interface Props {
   visible: boolean;
   initialData?: Course | null;
+  defaultDate?: string;
   onClose: () => void;
   onConfirm: (course: Course) => void;
 }
 
-const CourseForm: React.FC<Props> = ({ visible, initialData, onClose, onConfirm }) => {
+const CourseForm: React.FC<Props> = ({ visible, initialData, defaultDate, onClose, onConfirm }) => {
   const { state } = useApp();
   const isEdit = !!initialData;
 
@@ -49,7 +50,7 @@ const CourseForm: React.FC<Props> = ({ visible, initialData, onClose, onConfirm 
         setTitle('');
         setType('basic');
         setInstructor('');
-        setDate(formatDate(new Date().toISOString()));
+        setDate(defaultDate || formatDate(new Date().toISOString()));
         setStartTime('09:00');
         setEndTime('11:00');
         setStationId(state.stations[0]?.id || '');
@@ -60,7 +61,7 @@ const CourseForm: React.FC<Props> = ({ visible, initialData, onClose, onConfirm 
       setTimeError('');
       setConflictError('');
     }
-  }, [visible, initialData, state.stations]);
+  }, [visible, initialData, defaultDate, state.stations]);
 
   const stationName = state.stations.find(s => s.id === stationId)?.name || '';
 
@@ -321,7 +322,7 @@ const CourseForm: React.FC<Props> = ({ visible, initialData, onClose, onConfirm 
                 <View className={styles.closeBtn} onClick={() => setMaterialModalVisible(false)}>×</View>
               </View>
               <ScrollView className={styles.materialList} scrollY>
-                {state.liquors.map(l => (
+                {state.liquors.filter(l => l.category === 'base' || l.category === 'syrup').map(l => (
                   <View key={l.id} className={styles.liquorItem} onClick={() => handleAddMaterial(l)}>
                     <View>
                       <View className={styles.liquorName}>{l.name}</View>

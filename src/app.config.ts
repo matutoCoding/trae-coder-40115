@@ -9,7 +9,8 @@ export default defineAppConfig({
     'pages/rule-detail/index',
     'pages/batch-detail/index',
     'pages/exam-record/index',
-    'pages/station/index'
+    'pages/station/index',
+    'pages/stock-check/index'
   ],
   window: {
     backgroundTextStyle: 'light',
