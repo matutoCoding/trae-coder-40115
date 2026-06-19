@@ -1,16 +1,23 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, Button } from '@tarojs/components';
+import { View, Text, ScrollView, Button } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
-import { mockExamRecords } from '@/data/mockInventory';
+import { useApp } from '@/store';
 import { ExamRecord } from '@/types';
 import { getExamStatusText } from '@/components/Card/Tags';
+import { generateId } from '@/utils/storage';
+import { today } from '@/utils/date';
 
 type TabType = 'all' | 'pending' | 'reviewing' | 'passed' | 'failed';
 
 const ExamRecordPage: React.FC = () => {
+  const { state, dispatch } = useApp();
   const [activeTab, setActiveTab] = useState<TabType>('all');
-  const [records, setRecords] = useState<ExamRecord[]>(mockExamRecords);
+  const [records, setRecords] = useState<ExamRecord[]>(state.examRecords);
+
+  React.useEffect(() => {
+    setRecords(state.examRecords);
+  }, [state.examRecords]);
 
   const tabs: { key: TabType; label: string }[] = [
     { key: 'all', label: '全部' },
@@ -41,7 +48,16 @@ const ExamRecordPage: React.FC = () => {
       confirmColor: '#F44336',
       success: (res) => {
         if (res.confirm) {
-          Taro.showToast({ title: '录制功能开发中', icon: 'none' });
+          const newRecord: ExamRecord = {
+            id: generateId(),
+            studentName: '新学员',
+            courseName: '花式调酒考核',
+            examType: '实操考核',
+            createdAt: today(),
+            status: 'pending'
+          };
+          dispatch({ type: 'ADD_EXAM', payload: newRecord });
+          Taro.showToast({ title: '已创建考核记录', icon: 'success' });
         }
       }
     });
@@ -53,17 +69,19 @@ const ExamRecordPage: React.FC = () => {
 
   const handleReview = (record: ExamRecord) => {
     Taro.showActionSheet({
-      itemList: ['评分通过', '评分未通过', '查看详情'],
+      itemList: ['评分通过 (80分)', '评分未通过 (55分)', '查看详情'],
       success: (res) => {
         if (res.tapIndex === 0) {
-          setRecords(prev => prev.map(r =>
-            r.id === record.id ? { ...r, status: 'passed', score: 80, reviewer: '当前管理员' } : r
-          ));
+          dispatch({
+            type: 'UPDATE_EXAM',
+            payload: { ...record, status: 'passed', score: 80, reviewer: '当前管理员', comments: '动作规范，调制准确' }
+          });
           Taro.showToast({ title: '已标记通过', icon: 'success' });
         } else if (res.tapIndex === 1) {
-          setRecords(prev => prev.map(r =>
-            r.id === record.id ? { ...r, status: 'failed', score: 55, reviewer: '当前管理员' } : r
-          ));
+          dispatch({
+            type: 'UPDATE_EXAM',
+            payload: { ...record, status: 'failed', score: 55, reviewer: '当前管理员', comments: '需加强摇荡动作练习' }
+          });
           Taro.showToast({ title: '已标记未通过', icon: 'none' });
         } else {
           handlePlayVideo(record);
@@ -83,7 +101,7 @@ const ExamRecordPage: React.FC = () => {
   };
 
   return (
-    <View className={styles.container}>
+    <ScrollView className={styles.container} scrollY>
       <View className={styles.header}>
         <View>
           <View className={styles.title}>考核录像</View>
@@ -168,7 +186,7 @@ const ExamRecordPage: React.FC = () => {
           </View>
         ))
       )}
-    </View>
+    </ScrollView>
   );
 };
 

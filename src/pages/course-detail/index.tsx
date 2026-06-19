@@ -1,30 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Button } from '@tarojs/components';
-import Taro, { useRouter } from '@tarojs/taro';
+import Taro, { useRouter, useDidShow } from '@tarojs/taro';
 import styles from './index.module.scss';
-import { mockCourses } from '@/data/mockCourse';
+import CourseForm from '@/components/CourseForm';
+import { useApp } from '@/store';
 import { Course } from '@/types';
 import { getCourseTypeText, getCourseStatusText } from '@/components/Card/Tags';
 
 const CourseDetailPage: React.FC = () => {
   const router = useRouter();
+  const { state, dispatch } = useApp();
   const courseId = router.params.id;
 
-  const course = mockCourses.find(c => c.id === courseId) || mockCourses[0];
+  const [formVisible, setFormVisible] = useState(false);
+
+  const course: Course | undefined = useMemo(() => {
+    return state.courses.find(c => c.id === courseId);
+  }, [state.courses, courseId]);
+
+  useDidShow(() => {
+  });
+
+  if (!course) {
+    return (
+      <View className={styles.container}>
+        <View style={{ padding: '64rpx 32rpx', textAlign: 'center', color: '#A08060' }}>
+          未找到该课程信息
+        </View>
+      </View>
+    );
+  }
 
   const handleEdit = () => {
-    Taro.showToast({ title: '编辑课程功能开发中', icon: 'none' });
+    setFormVisible(true);
+  };
+
+  const handleCourseConfirm = (updated: Course) => {
+    dispatch({ type: 'UPDATE_COURSE', payload: updated });
+    setFormVisible(false);
+    Taro.showToast({ title: '已更新课程', icon: 'success' });
   };
 
   const handleCancel = () => {
+    if (course.status === 'cancelled') {
+      Taro.showToast({ title: '该课程已取消', icon: 'none' });
+      return;
+    }
     Taro.showModal({
       title: '确认取消',
-      content: `确定要取消「${course.title}」这节课吗？`,
+      content: `确定要取消「${course.title}」这节课吗？\n日期: ${course.date} ${course.startTime}-${course.endTime}`,
       confirmColor: '#F44336',
       success: (res) => {
         if (res.confirm) {
+          dispatch({
+            type: 'UPDATE_COURSE',
+            payload: { ...course, status: 'cancelled' }
+          });
           Taro.showToast({ title: '已取消课程', icon: 'success' });
-          setTimeout(() => Taro.navigateBack(), 1000);
+        }
+      }
+    });
+  };
+
+  const handleRestore = () => {
+    Taro.showModal({
+      title: '恢复课程',
+      content: `确定要恢复「${course.title}」吗？`,
+      confirmColor: '#8B4513',
+      success: (res) => {
+        if (res.confirm) {
+          dispatch({
+            type: 'UPDATE_COURSE',
+            payload: { ...course, status: 'scheduled' }
+          });
+          Taro.showToast({ title: '已恢复课程', icon: 'success' });
         }
       }
     });
@@ -95,9 +144,28 @@ const CourseDetailPage: React.FC = () => {
       </View>
 
       <View className={styles.actionRow}>
-        <Button className={styles.btnSecondary} onClick={handleCancel}>取消课程</Button>
-        <Button className={styles.btnPrimary} onClick={handleEdit}>调整排课</Button>
+        {course.status === 'cancelled' ? (
+          <Button
+            className={styles.btnPrimary}
+            onClick={handleRestore}
+            style={{ gridColumn: '1 / -1' }}
+          >
+            恢复课程
+          </Button>
+        ) : (
+          <>
+            <Button className={styles.btnSecondary} onClick={handleCancel}>取消课程</Button>
+            <Button className={styles.btnPrimary} onClick={handleEdit}>调整排课</Button>
+          </>
+        )}
       </View>
+
+      <CourseForm
+        visible={formVisible}
+        initialData={course}
+        onClose={() => setFormVisible(false)}
+        onConfirm={handleCourseConfirm}
+      />
     </View>
   );
 };

@@ -1,34 +1,81 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Button } from '@tarojs/components';
-import Taro, { useRouter } from '@tarojs/taro';
+import Taro, { useRouter, useDidShow } from '@tarojs/taro';
 import styles from './index.module.scss';
-import { mockLiquors, mockOutboundRecords } from '@/data/mockInventory';
-import { Batch, Liquor } from '@/types';
+import { useApp } from '@/store';
+import { Batch, Liquor, OutboundRecord } from '@/types';
 import { getBatchStatusText, getCategoryText } from '@/components/Card/Tags';
 import { getDaysDiff, today } from '@/utils/date';
+import { generateId } from '@/utils/storage';
 
 type TabType = 'batches' | 'records';
 
 const BatchDetailPage: React.FC = () => {
   const router = useRouter();
+  const { state, dispatch } = useApp();
   const liquorId = router.params.id;
 
   const [activeTab, setActiveTab] = useState<TabType>('batches');
-  const liquor: Liquor | undefined = mockLiquors.find(l => l.id === liquorId) || mockLiquors[0];
-  const [batches, setBatches] = useState<Batch[]>(liquor?.batches || []);
 
-  const sortedBatches = useMemo(() => {
-    return [...batches].sort((a, b) => {
-      return new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime();
-    });
-  }, [batches]);
+  const liquor: Liquor | undefined = useMemo(() => {
+    return state.liquors.find(l => l.id === liquorId) || state.liquors[0];
+  }, [state.liquors, liquorId]);
 
   const outboundRecords = useMemo(() => {
-    return mockOutboundRecords.filter(r => r.liquorId === liquor?.id);
+    return state.outboundRecords.filter(r => r.liquorId === liquor?.id);
+  }, [state.outboundRecords, liquor]);
+
+  const sortedBatches = useMemo(() => {
+    if (!liquor) return [];
+    return liquor.batches.sort((a, b) => {
+      return new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime();
+    });
   }, [liquor]);
 
+  useDidShow(() => {
+  });
+
   const handleAddBatch = () => {
-    Taro.showToast({ title: '新增批次功能开发中', icon: 'none' });
+    Taro.showToast({ title: '请在库存首页点击「登记入库」', icon: 'none' });
+  };
+
+  const doOutbound = (batch: Batch, qty: number) => {
+    const sameLiquor = state.batches.filter(b =>
+      b.liquorId === batch.liquorId
+      && (b.status === 'normal' || b.status === 'expiring')
+      && b.quantity > 0
+    );
+    const sorted = sameLiquor.sort((a, b) =>
+      new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime()
+    );
+    const isFifo = sorted.length > 0 && sorted[0].id === batch.id;
+
+    const record: OutboundRecord = {
+      id: generateId(),
+      batchId: batch.id,
+      liquorId: batch.liquorId,
+      liquorName: batch.liquorName,
+      batchNo: batch.batchNo,
+      quantity: Math.min(qty, batch.quantity),
+      unit: batch.unit,
+      operator: '当前管理员',
+      outboundDate: today(),
+      purpose: '课程使用',
+      isFifo
+    };
+
+    dispatch({ type: 'ADD_OUTBOUND', payload: record });
+
+    if (!isFifo) {
+      setTimeout(() => {
+        Taro.showModal({
+          title: '非FIFO出库提醒',
+          content: `「${batch.liquorName}」存在更早到期的批次，本次出库不符合先进先出原则。`,
+          confirmText: '知道了',
+          showCancel: false
+        });
+      }, 300);
+    }
   };
 
   const handleOutbound = (batch: Batch) => {
@@ -38,11 +85,12 @@ const BatchDetailPage: React.FC = () => {
     }
     Taro.showModal({
       title: '先进先出出库',
-      content: `确定出库 ${batch.liquorName}?\n批次: ${batch.batchNo}\n剩余: ${batch.quantity} ${batch.unit}`,
+      content: `确定出库 ${batch.liquorName}?\n批次: ${batch.batchNo}\n剩余: ${batch.quantity} ${batch.unit}\n\n出库1${batch.unit}？`,
       confirmText: '确认出库',
       confirmColor: '#8B4513',
       success: (res) => {
         if (res.confirm) {
+          doOutbound(batch, 1);
           Taro.showToast({ title: '出库成功', icon: 'success' });
         }
       }
@@ -56,9 +104,7 @@ const BatchDetailPage: React.FC = () => {
       confirmColor: '#F44336',
       success: (res) => {
         if (res.confirm) {
-          setBatches(prev => prev.map(b =>
-            b.id === batch.id ? { ...b, status: 'locked' } : b
-          ));
+          dispatch({ type: 'UPDATE_BATCH', payload: { ...batch, status: 'locked' } });
           Taro.showToast({ title: '已锁定', icon: 'success' });
         }
       }
@@ -76,9 +122,9 @@ const BatchDetailPage: React.FC = () => {
       confirmColor: '#8B4513',
       success: (res) => {
         if (res.confirm) {
-          setBatches(prev => prev.map(b =>
-            b.id === batch.id ? { ...b, status: 'normal' } : b
-          ));
+          const daysToExpiry = getDaysDiff(today(), batch.expiryDate);
+          const newStatus = daysToExpiry <= 15 ? 'expiring' : 'normal';
+          dispatch({ type: 'UPDATE_BATCH', payload: { ...batch, status: newStatus } });
           Taro.showToast({ title: '已解锁', icon: 'success' });
         }
       }
@@ -215,9 +261,9 @@ const BatchDetailPage: React.FC = () => {
                         解锁
                       </Button>
                     ) : batch.status === 'expired' ? (
-                      <Button className={`${styles.actionBtn} ${styles.btnLock}`} disabled>
-                        已过期
-                      </Button>
+                      <View style={{ flex: 1, textAlign: 'right', fontSize: '24rpx', color: '#9E9E9E' }}>
+                        已过期，自动锁定
+                      </View>
                     ) : (
                       <>
                         <Button className={`${styles.actionBtn} ${styles.btnLock}`} onClick={() => handleLock(batch)}>
@@ -253,6 +299,7 @@ const BatchDetailPage: React.FC = () => {
                     <View className={styles.recordTitle}>{record.batchNo}</View>
                     <View className={styles.recordDesc}>
                       {record.outboundDate} · {record.operator} · {record.purpose}
+                      {record.isFifo && <Text style={{ color: '#4CAF50', marginLeft: '12rpx' }}>[FIFO]</Text>}
                     </View>
                   </View>
                   <View className={styles.recordQty}>-{record.quantity} {record.unit}</View>

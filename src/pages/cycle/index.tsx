@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, Button } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
-import { mockCycleRules } from '@/data/mockCourse';
-import { CycleRule } from '@/types';
+import { useApp } from '@/store';
+import { CycleRule, Course } from '@/types';
 import { Tag, getCourseTypeText } from '@/components/Card/Tags';
-import { getWeekdayName } from '@/utils/date';
+import { getWeekdayName, formatDate } from '@/utils/date';
+import { generateId } from '@/utils/storage';
 
 const CyclePage: React.FC = () => {
-  const [rules, setRules] = useState<CycleRule[]>(mockCycleRules);
+  const { state, dispatch } = useApp();
+  const [rules, setRules] = useState<CycleRule[]>(state.cycleRules);
+
+  React.useEffect(() => {
+    setRules(state.cycleRules);
+  }, [state.cycleRules]);
 
   const activeRules = rules.filter(r => r.status === 'active');
   const totalGenerated = rules.reduce((sum, r) => sum + r.totalGenerated, 0);
@@ -21,39 +27,115 @@ const CyclePage: React.FC = () => {
     Taro.navigateTo({ url: `/pages/rule-detail/index?id=${id}` });
   };
 
+  const hasConflict = (date: string, stationId: string, startTime: string, endTime: string, excludeId?: string): Course | null => {
+    const [startH, startM] = startTime.split(':').map(Number);
+    const [endH, endM] = endTime.split(':').map(Number);
+    const startMin = startH * 60 + startM;
+    const endMin = endH * 60 + endM;
+
+    return state.courses.find(c => {
+      if (excludeId && c.ruleId === excludeId) return false;
+      if (c.id === excludeId) return false;
+      if (c.stationId !== stationId) return false;
+      if (c.date !== date) return false;
+      if (c.status === 'cancelled') return false;
+      const [cH1, cM1] = c.startTime.split(':').map(Number);
+      const [cH2, cM2] = c.endTime.split(':').map(Number);
+      const cStart = cH1 * 60 + cM1;
+      const cEnd = cH2 * 60 + cM2;
+      return startMin < cEnd && endMin > cStart;
+    }) || null;
+  };
+
   const handleGenerate = (rule: CycleRule) => {
     if (rule.status !== 'active') {
       Taro.showToast({ title: '请先启用该规则', icon: 'none' });
       return;
     }
 
-    Taro.showModal({
-      title: '确认生成',
-      content: `将按规则「${rule.name}」批量生成课程排期，是否继续？`,
-      confirmColor: '#8B4513',
-      success: (res) => {
-        if (res.confirm) {
-          const newCount = rule.weekdays.length * 4;
-          Taro.showLoading({ title: '生成中...' });
-          setTimeout(() => {
-            setRules(prev => prev.map(r =>
-              r.id === rule.id
-                ? { ...r, totalGenerated: r.totalGenerated + newCount }
-                : r
-            ));
-            Taro.hideLoading();
-            Taro.showToast({ title: `成功生成 ${newCount} 节课程`, icon: 'success' });
-          }, 1000);
+    Taro.showLoading({ title: '计算中...' });
+
+    setTimeout(() => {
+      const startDate = new Date(rule.startDate);
+      const endDate = new Date(rule.endDate);
+      const generated: Course[] = [];
+      const conflicts: string[] = [];
+
+      for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+        const weekday = d.getDay();
+        if (!rule.weekdays.includes(weekday)) continue;
+
+        const dateStr = formatDate(d.toISOString());
+        const conflict = hasConflict(dateStr, rule.stationId, rule.startTime, rule.endTime);
+
+        if (conflict) {
+          conflicts.push(`${dateStr}(${getWeekdayName(weekday)}) - 与「${conflict.title}」冲突`);
+          continue;
         }
+
+        generated.push({
+          id: generateId(),
+          title: rule.courseTitle,
+          type: rule.courseType,
+          instructor: rule.instructor,
+          date: dateStr,
+          startTime: rule.startTime,
+          endTime: rule.endTime,
+          stationId: rule.stationId,
+          stationName: rule.stationName,
+          students: [],
+          maxStudents: rule.maxStudents,
+          status: 'scheduled',
+          isGenerated: true,
+          ruleId: rule.id
+        });
       }
-    });
+
+      Taro.hideLoading();
+
+      if (generated.length === 0 && conflicts.length > 0) {
+        Taro.showModal({
+          title: '全部时间冲突',
+          content: `所选时间段内 ${conflicts.length} 个上课日均存在操作台占用冲突，无法生成课程。建议调整时间或更换操作台。`,
+          showCancel: false,
+          confirmColor: '#8B4513'
+        });
+        return;
+      }
+
+      const conflictMsg = conflicts.length > 0
+        ? `\n\n⚠️ 有 ${conflicts.length} 个日期因操作台冲突已跳过：\n${conflicts.slice(0, 3).join('\n')}${conflicts.length > 3 ? `\n...等共${conflicts.length}个` : ''}`
+        : '';
+
+      Taro.showModal({
+        title: '确认生成',
+        content: `规则「${rule.name}」\n将生成 ${generated.length} 节课程${conflictMsg}\n\n是否继续？`,
+        confirmText: '生成课程',
+        confirmColor: '#8B4513',
+        success: (res) => {
+          if (res.confirm) {
+            if (generated.length > 0) {
+              dispatch({ type: 'BATCH_ADD_COURSES', payload: generated });
+              dispatch({
+                type: 'UPDATE_RULE',
+                payload: { ...rule, totalGenerated: rule.totalGenerated + generated.length }
+              });
+            }
+            Taro.showToast({
+              title: `成功生成 ${generated.length} 节`,
+              icon: 'success'
+            });
+          }
+        }
+      });
+    }, 300);
   };
 
   const handleRefresh = () => {
     setTimeout(() => {
       Taro.stopPullDownRefresh();
       Taro.showToast({ title: '刷新成功', icon: 'success' });
-    }, 1000);
+    }, 800);
   };
 
   return (

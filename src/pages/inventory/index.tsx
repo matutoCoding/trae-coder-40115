@@ -3,16 +3,18 @@ import { View, Text, ScrollView, Button, Input } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import LiquorCard from '@/components/BatchCard';
-import { mockLiquors, mockBatches } from '@/data/mockInventory';
+import InboundForm from '@/components/InboundForm';
+import { useApp } from '@/store';
 import { Liquor, LiquorCategory, Batch } from '@/types';
-import { getCategoryText, getBatchStatusText } from '@/components/Card/Tags';
+import { getBatchStatusText } from '@/components/Card/Tags';
 
 type FilterType = 'all' | LiquorCategory;
 
 const InventoryPage: React.FC = () => {
-  const [liquors, setLiquors] = useState<Liquor[]>(mockLiquors);
+  const { state, dispatch } = useApp();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [searchText, setSearchText] = useState('');
+  const [inboundVisible, setInboundVisible] = useState(false);
 
   const filters: { key: FilterType; label: string }[] = [
     { key: 'all', label: '全部' },
@@ -24,11 +26,11 @@ const InventoryPage: React.FC = () => {
   ];
 
   const warningBatches = useMemo(() => {
-    return mockBatches.filter(b => b.status !== 'normal');
-  }, []);
+    return state.batches.filter(b => b.status !== 'normal' && b.quantity > 0);
+  }, [state.batches]);
 
   const filteredLiquors = useMemo(() => {
-    let result = liquors;
+    let result = state.liquors;
     if (activeFilter !== 'all') {
       result = result.filter(l => l.category === activeFilter);
     }
@@ -38,17 +40,23 @@ const InventoryPage: React.FC = () => {
       );
     }
     return result;
-  }, [liquors, activeFilter, searchText]);
+  }, [state.liquors, activeFilter, searchText]);
 
   const handleAddBatch = () => {
-    Taro.showToast({ title: '新增批次功能开发中', icon: 'none' });
+    setInboundVisible(true);
+  };
+
+  const handleInboundConfirm = (batch: Batch) => {
+    dispatch({ type: 'ADD_BATCH', payload: batch });
+    setInboundVisible(false);
+    Taro.showToast({ title: '入库成功', icon: 'success' });
   };
 
   const handleRefresh = () => {
     setTimeout(() => {
       Taro.stopPullDownRefresh();
       Taro.showToast({ title: '刷新成功', icon: 'success' });
-    }, 1000);
+    }, 800);
   };
 
   const getBatchStatusClass = (status: Batch['status']) => {
@@ -78,7 +86,7 @@ const InventoryPage: React.FC = () => {
           <View className={styles.warningList}>
             {warningBatches.slice(0, 3).map(batch => (
               <View key={batch.id} className={styles.warningItem}>
-                <Text className={styles.warningItemText}>{batch.liquorName}</Text>
+                <Text className={styles.warningItemText}>{batch.liquorName} - {batch.batchNo}</Text>
                 <Text className={`${styles.warningItemTag} ${getBatchStatusClass(batch.status)}`}>
                   {getBatchStatusText(batch.status)}
                 </Text>
@@ -133,6 +141,12 @@ const InventoryPage: React.FC = () => {
           <LiquorCard key={liquor.id} liquor={liquor} />
         ))
       )}
+
+      <InboundForm
+        visible={inboundVisible}
+        onClose={() => setInboundVisible(false)}
+        onConfirm={handleInboundConfirm}
+      />
     </ScrollView>
   );
 };

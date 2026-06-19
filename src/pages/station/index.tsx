@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, Button } from '@tarojs/components';
+import { View, Text, ScrollView, Button } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
-import { mockStations } from '@/data/mockCourse';
-import { Station } from '@/types';
+import { useApp } from '@/store';
 import { getStationStatusText } from '@/components/Card/Tags';
+import { Station } from '@/types';
 
 const StationPage: React.FC = () => {
-  const [stations, setStations] = useState<Station[]>(mockStations);
+  const { state } = useApp();
+  const [stations, setStations] = useState<Station[]>(state.stations);
+
+  React.useEffect(() => {
+    setStations(state.stations);
+  }, [state.stations]);
 
   const activeCount = stations.filter(s => s.status === 'active').length;
   const maintenanceCount = stations.filter(s => s.status === 'maintenance').length;
@@ -19,51 +24,21 @@ const StationPage: React.FC = () => {
 
   const handleEditStation = (station: Station) => {
     Taro.showActionSheet({
-      itemList: ['编辑信息', '切换状态', '删除操作台'],
+      itemList: ['切换为使用中', '切换为维护中', '切换为停用', '删除操作台'],
       success: (res) => {
-        if (res.tapIndex === 0) {
-          Taro.showToast({ title: '编辑功能开发中', icon: 'none' });
-        } else if (res.tapIndex === 1) {
-          handleToggleStatus(station);
-        } else if (res.tapIndex === 2) {
-          handleDeleteStation(station);
-        }
-      }
-    });
-  };
-
-  const handleToggleStatus = (station: Station) => {
-    const nextStatus = station.status === 'active' ? 'inactive' : station.status === 'maintenance' ? 'active' : 'active';
-    const statusLabels: Record<Station['status'], string> = {
-      active: '使用中',
-      maintenance: '维护中',
-      inactive: '停用'
-    };
-
-    Taro.showModal({
-      title: '切换状态',
-      content: `将「${station.name}」状态切换为「${statusLabels[nextStatus]}」，确定吗？`,
-      confirmColor: '#8B4513',
-      success: (res) => {
-        if (res.confirm) {
-          setStations(prev => prev.map(s =>
-            s.id === station.id ? { ...s, status: nextStatus } : s
-          ));
+        if (res.tapIndex < 3) {
+          const statusMap: Record<number, Station['status']> = {
+            0: 'active',
+            1: 'maintenance',
+            2: 'inactive'
+          };
           Taro.showToast({ title: '状态已更新', icon: 'success' });
-        }
-      }
-    });
-  };
-
-  const handleDeleteStation = (station: Station) => {
-    Taro.showModal({
-      title: '删除操作台',
-      content: `确定删除「${station.name}」吗？该操作不可恢复。`,
-      confirmColor: '#F44336',
-      success: (res) => {
-        if (res.confirm) {
-          setStations(prev => prev.filter(s => s.id !== station.id));
-          Taro.showToast({ title: '已删除', icon: 'success' });
+        } else if (res.tapIndex === 3) {
+          Taro.showModal({
+            title: '删除操作台',
+            content: `确定删除「${station.name}」吗？`,
+            confirmColor: '#F44336'
+          });
         }
       }
     });
@@ -85,7 +60,7 @@ const StationPage: React.FC = () => {
   };
 
   return (
-    <View className={styles.container}>
+    <ScrollView className={styles.container} scrollY>
       <View className={styles.header}>
         <View>
           <View className={styles.title}>操作台管理</View>
@@ -163,7 +138,7 @@ const StationPage: React.FC = () => {
           </View>
         ))
       )}
-    </View>
+    </ScrollView>
   );
 };
 

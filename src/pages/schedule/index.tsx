@@ -4,21 +4,26 @@ import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import CalendarView from '@/components/CalendarView';
 import CourseCard from '@/components/CourseCard';
-import { mockCourses, mockStations } from '@/data/mockCourse';
+import CourseForm from '@/components/CourseForm';
+import { useApp } from '@/store';
 import { Course } from '@/types';
 import { today, formatDate } from '@/utils/date';
 
 type TabType = 'today' | 'week' | 'all';
 
 const SchedulePage: React.FC = () => {
+  const { state, dispatch } = useApp();
   const [activeTab, setActiveTab] = useState<TabType>('today');
   const [selectedDate, setSelectedDate] = useState<string>(formatDate(new Date().toISOString()));
-  const [courses, setCourses] = useState<Course[]>(mockCourses);
+  const [formVisible, setFormVisible] = useState(false);
+  const [editingCourse, setEditingCourse] = useState<Course | null>(null);
 
   const todayStr = today();
+  const courses = state.courses;
+  const stations = state.stations;
 
   const courseDates = useMemo(() => {
-    return [...new Set(courses.map(c => c.date))];
+    return [...new Set(courses.filter(c => c.status !== 'cancelled').map(c => c.date))];
   }, [courses]);
 
   const filteredCourses = useMemo(() => {
@@ -55,19 +60,37 @@ const SchedulePage: React.FC = () => {
   }, [courses, todayStr]);
 
   const handleAddCourse = () => {
-    Taro.showToast({ title: '新增排课功能开发中', icon: 'none' });
+    setEditingCourse(null);
+    setFormVisible(true);
+  };
+
+  const handleCourseConfirm = (course: Course) => {
+    if (editingCourse) {
+      dispatch({ type: 'UPDATE_COURSE', payload: course });
+      Taro.showToast({ title: '已更新课程', icon: 'success' });
+    } else {
+      dispatch({ type: 'ADD_COURSE', payload: course });
+      Taro.showToast({ title: '已新增课程', icon: 'success' });
+    }
+    setFormVisible(false);
+    setEditingCourse(null);
   };
 
   const handleRefresh = () => {
     setTimeout(() => {
       Taro.stopPullDownRefresh();
       Taro.showToast({ title: '刷新成功', icon: 'success' });
-    }, 1000);
+    }, 800);
   };
 
   const handleSelectDate = (date: string) => {
     setSelectedDate(date);
     setActiveTab('today');
+  };
+
+  const handleEditCourse = (course: Course) => {
+    setEditingCourse(course);
+    setFormVisible(true);
   };
 
   return (
@@ -90,7 +113,7 @@ const SchedulePage: React.FC = () => {
           <View className={styles.statLabel}>本周课程</View>
         </View>
         <View className={styles.statCard}>
-          <View className={styles.statValue}>{mockStations.filter(s => s.status === 'active').length}</View>
+          <View className={styles.statValue}>{stations.filter(s => s.status === 'active').length}</View>
           <View className={styles.statLabel}>可用操作台</View>
         </View>
       </View>
@@ -134,9 +157,20 @@ const SchedulePage: React.FC = () => {
         </View>
       ) : (
         filteredCourses.map(course => (
-          <CourseCard key={course.id} course={course} />
+          <CourseCard key={course.id} course={course} onClick={() => handleEditCourse(course)} />
         ))
       )}
+
+      <CourseForm
+        visible={formVisible}
+        initialData={editingCourse}
+        defaultDate={selectedDate}
+        onClose={() => {
+          setFormVisible(false);
+          setEditingCourse(null);
+        }}
+        onConfirm={handleCourseConfirm}
+      />
     </ScrollView>
   );
 };
