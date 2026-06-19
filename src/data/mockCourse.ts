@@ -1,4 +1,4 @@
-import { Course, CycleRule, Station } from '@/types';
+import { Course, CycleRule, Station, CourseMaterial } from '@/types';
 import { addDays, today } from '@/utils/date';
 
 export const mockStations: Station[] = [
@@ -68,10 +68,16 @@ export const mockCourses: Course[] = [
     stationId: 'st_001',
     stationName: '一号操作台',
     students: ['李明', '王芳', '赵强'],
+    presentStudents: ['李明', '王芳'],
+    absentStudents: [],
     maxStudents: 4,
     status: 'scheduled',
     isGenerated: true,
-    ruleId: 'r_001'
+    ruleId: 'r_001',
+    materials: [
+      { liquorId: 'l_001', liquorName: '百加得白朗姆酒', unit: '瓶', estimatedQty: 2 },
+      { liquorId: 'l_004', liquorName: '必得利红石榴糖浆', unit: '瓶', estimatedQty: 1 }
+    ]
   },
   {
     id: 'c_002',
@@ -84,10 +90,16 @@ export const mockCourses: Course[] = [
     stationId: 'st_002',
     stationName: '二号操作台',
     students: ['陈红', '刘洋', '周杰', '吴敏'],
+    presentStudents: ['陈红', '刘洋', '周杰'],
+    absentStudents: ['吴敏'],
     maxStudents: 4,
     status: 'ongoing',
     isGenerated: true,
-    ruleId: 'r_002'
+    ruleId: 'r_002',
+    materials: [
+      { liquorId: 'l_003', liquorName: '尊尼获加黑牌威士忌', unit: '瓶', estimatedQty: 2 },
+      { liquorId: 'l_007', liquorName: '柠檬汁', unit: '瓶', estimatedQty: 3 }
+    ]
   },
   {
     id: 'c_003',
@@ -100,10 +112,17 @@ export const mockCourses: Course[] = [
     stationId: 'st_003',
     stationName: '三号操作台',
     students: ['孙丽', '钱伟'],
+    presentStudents: [],
+    absentStudents: [],
     maxStudents: 6,
     status: 'scheduled',
     isGenerated: true,
-    ruleId: 'r_003'
+    ruleId: 'r_003',
+    materials: [
+      { liquorId: 'l_002', liquorName: '斯米诺伏特加', unit: '瓶', estimatedQty: 1 },
+      { liquorId: 'l_005', liquorName: '莫林香草糖浆', unit: '瓶', estimatedQty: 1 },
+      { liquorId: 'l_006', liquorName: '君度力娇酒', unit: '瓶', estimatedQty: 1 }
+    ]
   },
   {
     id: 'c_004',
@@ -116,9 +135,12 @@ export const mockCourses: Course[] = [
     stationId: 'st_004',
     stationName: '考核专用台',
     students: ['郑涛'],
+    presentStudents: [],
+    absentStudents: [],
     maxStudents: 2,
     status: 'scheduled',
-    isGenerated: false
+    isGenerated: false,
+    materials: []
   },
   {
     id: 'c_005',
@@ -131,10 +153,15 @@ export const mockCourses: Course[] = [
     stationId: 'st_001',
     stationName: '一号操作台',
     students: ['黄丽', '徐明'],
+    presentStudents: [],
+    absentStudents: [],
     maxStudents: 4,
     status: 'scheduled',
     isGenerated: true,
-    ruleId: 'r_001'
+    ruleId: 'r_001',
+    materials: [
+      { liquorId: 'l_001', liquorName: '百加得白朗姆酒', unit: '瓶', estimatedQty: 2 }
+    ]
   },
   {
     id: 'c_006',
@@ -147,10 +174,16 @@ export const mockCourses: Course[] = [
     stationId: 'st_002',
     stationName: '二号操作台',
     students: ['朱峰', '秦雪', '何斌', '罗燕'],
+    presentStudents: [],
+    absentStudents: [],
     maxStudents: 4,
     status: 'scheduled',
     isGenerated: true,
-    ruleId: 'r_004'
+    ruleId: 'r_004',
+    materials: [
+      { liquorId: 'l_004', liquorName: '必得利红石榴糖浆', unit: '瓶', estimatedQty: 2 },
+      { liquorId: 'l_005', liquorName: '莫林香草糖浆', unit: '瓶', estimatedQty: 2 }
+    ]
   },
   {
     id: 'c_007',
@@ -163,10 +196,15 @@ export const mockCourses: Course[] = [
     stationId: 'st_002',
     stationName: '二号操作台',
     students: ['陈红', '刘洋', '周杰'],
+    presentStudents: [],
+    absentStudents: [],
     maxStudents: 4,
     status: 'scheduled',
     isGenerated: true,
-    ruleId: 'r_002'
+    ruleId: 'r_002',
+    materials: [
+      { liquorId: 'l_003', liquorName: '尊尼获加黑牌威士忌', unit: '瓶', estimatedQty: 2 }
+    ]
   },
   {
     id: 'c_008',
@@ -179,10 +217,16 @@ export const mockCourses: Course[] = [
     stationId: 'st_001',
     stationName: '一号操作台',
     students: ['李明', '王芳'],
+    presentStudents: ['李明', '王芳'],
+    absentStudents: [],
     maxStudents: 4,
     status: 'completed',
     isGenerated: true,
-    ruleId: 'r_001'
+    ruleId: 'r_001',
+    completedAt: addDays(todayDate, -1),
+    materials: [
+      { liquorId: 'l_001', liquorName: '百加得白朗姆酒', unit: '瓶', estimatedQty: 2, actualQty: 2 }
+    ]
   }
 ];
 

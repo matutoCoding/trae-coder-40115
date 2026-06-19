@@ -1,4 +1,4 @@
-import { Batch, Liquor, OutboundRecord, ExamRecord } from '@/types';
+import { Batch, Liquor, OutboundRecord, ExamRecord, StockCheckRecord } from '@/types';
 import { addDays, today } from '@/utils/date';
 
 const todayDate = today();
@@ -331,5 +331,18 @@ export const mockExamRecords: ExamRecord[] = [
     examType: '初级实操',
     createdAt: todayDate,
     status: 'pending'
+  }
+];
+
+export const mockStockCheckRecords: StockCheckRecord[] = [
+  {
+    id: 'sc_001',
+    checkDate: addDays(todayDate, -5),
+    operator: '管理员',
+    remark: '周度例行盘点',
+    items: [
+      { liquorId: 'l_001', liquorName: '百加得白朗姆酒', unit: '瓶', systemQty: 20, checkQty: 18, diffQty: -2 },
+      { liquorId: 'l_002', liquorName: '斯米诺伏特加', unit: '瓶', systemQty: 8, checkQty: 8, diffQty: 0 }
+    ]
   }
 ];

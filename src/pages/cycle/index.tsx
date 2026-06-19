@@ -84,10 +84,13 @@ const CyclePage: React.FC = () => {
           stationId: rule.stationId,
           stationName: rule.stationName,
           students: [],
+          presentStudents: [],
+          absentStudents: [],
           maxStudents: rule.maxStudents,
           status: 'scheduled',
           isGenerated: true,
-          ruleId: rule.id
+          ruleId: rule.id,
+          materials: []
         });
       }
 

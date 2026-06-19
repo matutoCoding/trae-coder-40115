@@ -9,6 +9,14 @@ export interface Station {
   createdAt: string;
 }
 
+export interface CourseMaterial {
+  liquorId: string;
+  liquorName: string;
+  unit: string;
+  estimatedQty: number;
+  actualQty?: number;
+}
+
 export interface Course {
   id: string;
   title: string;
@@ -20,11 +28,15 @@ export interface Course {
   stationId: string;
   stationName: string;
   students: string[];
+  presentStudents: string[];
+  absentStudents: string[];
   maxStudents: number;
   status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
   isGenerated: boolean;
   ruleId?: string;
   notes?: string;
+  materials: CourseMaterial[];
+  completedAt?: string;
 }
 
 export interface CycleRule {
@@ -90,6 +102,23 @@ export interface OutboundRecord {
   purpose: string;
   courseId?: string;
   isFifo: boolean;
+}
+
+export interface StockCheckItem {
+  liquorId: string;
+  liquorName: string;
+  unit: string;
+  systemQty: number;
+  checkQty: number;
+  diffQty: number;
+}
+
+export interface StockCheckRecord {
+  id: string;
+  checkDate: string;
+  operator: string;
+  remark?: string;
+  items: StockCheckItem[];
 }
 
 export interface ExamRecord {
